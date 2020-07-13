@@ -1,0 +1,3 @@
+# Risk Premia Investing
+
+Statistical learning applied to risk premia investing has been a rapidly developing field in recent years. Risk premia investing is a subfield of a large discipline that encompasses asset allocation, quantitative trading and wealth management. In equities, its premise is that differences in the returns of firms can be explained by the [characteristics of these firms](module_factors.pdf). Applying statistical learning over these characteristics can enhance the resulting risk premia. This course is intended to introduce the application of statistical learning methods to [risk premia investing](module_risk_premia.pdf).
