@@ -1,0 +1,5 @@
+The complications with target capital structure lie in both the statistical problems with estimating risk parameters and with the valuation models themselves, there is a way of estimating costs of equity and capital that is agnostic about the choice of models, but it lead to circular reasoning, at least in the context of valuation. Here, the cost of capital operates as an optimizing engine, where the price of risk is set by markets and it enters the cost of capital in two places. When estimating the cost of equity, it manifests as an equity risk premium, and in the cost of debt computation, it is a default spread. Both are set by markets, reflect investor risk aversion and change over time and the approaches that we use to estimate them reflect this reality. Using this approach, I estimated the cost of capital and target debt ratios **pre-COVID** (as of _Jan 1, 2020_) for a total of $39,643$ firms to get a sense of how much punishment businesses can take.
+
+Reference: [Damodaran, Aswath Applied Corporate Finance, 4th Edition ISBN 978-1-118-91857-9](https://www.wiley.com/en-us/Applied+Corporate+Finance%2C+4th+Edition-p-9781118918579)
+
+![](flowcharts.png)
