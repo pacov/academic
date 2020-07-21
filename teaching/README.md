@@ -3,7 +3,6 @@
 
 I always prioritize kindness, humility, and empathy. So, in the words of the old English calling, "Come ye, come all", take what you find useful, abandon what you don't and have lots of fun while you do this.
 
-
 # Learning
 
 1. Write the problem down
