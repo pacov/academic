@@ -31,9 +31,7 @@ A firm regardless of the size where people with the best understanding of a part
 
 # Team Work
 
-Building a strong team doesn't guarantee success. But it gives you your best shot at it. 
-
-> Computer scientist Hal Abelson has observed that "No matter how complex and polished the individual operations are, it is often the quality of the glue that most directly determines the power of the system."
+Building a strong team doesn't guarantee success. But it gives you your best shot at it. Computer scientist Hal Abelson has observed that "No matter how complex and polished the individual operations are, it is often the quality of the glue that most directly determines the power of the system."
 
 
 # Myself
