@@ -10,9 +10,12 @@
 
 * [OneSixtyTwo Labs](https://github.com/rnfermincota/academic/tree/master/research): sparsity-based signal processing and statistical learning techniques.
 
-**Courses**
+**Seminars**
 
-* [Applied Corporate Finance](https://github.com/rnfermincota/academic/tree/master/courses/Applied-Corporate-Finance). I created this course partly in service to younger analysts who may be tasked with implementing financial modeling at work. My experience is that students find these calculations difficult at the outset and struggle to get their arms around them. I provide detailed examples, work through the formulas and calculations and, for those interested, code to automate the calculations. I always advise young people interested in investment banking to learn some coding and hope a few might be motivated by my experiences. If you learn to code in an advanced language like [R or Python](https://rstudio.com/solutions/r-and-python/), it will open new avenues for your analytical work, will vastly improve your productivity and will protect the future of your career as forces of automation and artificial intelligence rapidly advance in our industry. Those not interested in the coding can simply skip the coding examples and focus on the spreadsheet.
+These seminars will be online and for curious students in the Dominican Republic to join, and since we are going to be covering financial models mainly (except for the [DELL LBO](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/1_corporate)) on real assets ([real estate](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/2_real_estate) and [infrastructure](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/3_infrastructure) mainly because of the PPP projects in infrastructure), I will try to find ways to keep students engaged, disciplined and interactive. For example, two weeks ago I had [Karl Polen](https://karlp-asrs.github.io/bio.html) as guest lecturer in my class at the [National University of Singapore](http://nus.edu.sg/). Karl is the Chief Investment Officer at the Arizona State Retirement System and is responsible for the management of $\$40+$ billion in assets. 
+
+My objective of sharing the course material below is not to provide prescriptive modeling lessons, but to instead provide students a menu of cases, with enough information to help them make the financial modeling choice that is best for the deal at hand.  Put simply, I can provide some structure for you to organize what you already know, and tools that may help you put that knowledge into practice. I hope that you do give one (or more) of my cases a shot and I hope that you enjoy the experience and get a chance to try it out at work.
+Sincerely, Nico
 
 <!--
 ![](mj.jpg)

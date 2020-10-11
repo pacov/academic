@@ -1,0 +1,5 @@
+I am sharing the material in this repository partly in service to younger analysts in the D.R. who may be tasked with implementing financial modeling in buy-side and sell-side. My experience is that students find these calculations difficult at the outset and struggle to get their arms around them. On each seminar I will provide detailed examples, work through the formulas and calculations and, for those interested, code to automate the calculations. 
+
+I always advise young people interested in investment banking to learn some coding and hope a few might be motivated by [my experiences](/0-My-Journey). If you learn to code in an advanced language like [R or Python](https://rstudio.com/solutions/r-and-python/), it will open new avenues for your analytical work, will vastly improve your productivity and will protect the future of your career as forces of automation and artificial intelligence rapidly advance in our industry. Those not interested in the coding can simply skip the coding examples and focus on the spreadsheet.
+
+Nico

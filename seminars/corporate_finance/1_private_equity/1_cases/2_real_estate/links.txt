@@ -1,0 +1,5 @@
+Case Study:
+https://github.com/rnfermincota/academic/blob/master/teaching/real_assets/module_real_estate.pdf
+
+Math:
+https://rpubs.com/rafael_nicolas/irr_mirr
