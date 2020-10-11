@@ -12,7 +12,7 @@
 
 **Seminars**
 
-* These seminars will be online and for curious students in the Dominican Republic to join, and since we are going to be covering financial models mainly (except for the [DELL LBO](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/1_corporate)) on real assets ([real estate](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/2_real_estate) and [infrastructure](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/3_infrastructure) mainly because of the PPP projects in infrastructure), I will try to find ways to keep students engaged, disciplined and interactive. 
+* [These seminars](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/) will be online and for curious students in the Dominican Republic to join, and since we are going to be covering financial models mainly (except for the [DELL LBO](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/1_corporate)) on real assets ([real estate](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/2_real_estate) and [infrastructure](https://github.com/rnfermincota/academic/tree/master/seminars/corporate_finance/1_private_equity/1_cases/3_infrastructure) mainly because of the PPP projects in infrastructure), I will try to find ways to keep students engaged, disciplined and interactive. 
 
 Sincerely, Nico
 
