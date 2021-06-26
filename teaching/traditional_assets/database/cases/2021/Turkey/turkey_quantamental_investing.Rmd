@@ -1,0 +1,220 @@
+---
+title: "Quantamental Investing in Turkey"
+author: "Rafael Nicolas Fermin Cota"
+date: "2021/06/20"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: 
+      collapsed: false
+      smooth_scroll: true
+    number_sections: true
+    code_folding: hide 
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+rm(list=ls())
+graphics.off()
+
+knitr::opts_chunk$set(
+  # echo = TRUE, 
+  collapse=TRUE,
+  comment="#",
+  message=FALSE,
+  warning=FALSE,
+  cache=FALSE,
+  dev.args = list(pointsize = 11)
+)
+
+# options(digits = 3, width = 60)
+options(scipen = 1, digits = 2) #set to two decimal 
+
+library(tidyr)
+library(dplyr)
+library(purrr)
+
+library(DT)
+library(portfolioBacktest)
+
+path_root <- "."
+path_data <- file.path(path_root, "data")
+path_libs <- file.path(path_root, "libs")
+#path_app <- file.path(path_data, "appfiles")
+
+source(file.path(path_libs, "utils.R"))
+load(file=file.path(path_data, "turkey_fundamental_data.Rda"))
+load(file=file.path(path_data, "turkey_pricing_data.Rda"))
+load(file=file.path(path_data, "turkey_risk_premium_data.Rda")); rm(output)
+load(file=file.path(path_data, "turkey_gdelt_instability.Rda"))
+load(file=file.path(path_data, "turkey_portfolio_backtest.Rda"))
+
+# listviewer::jsonedit(turkey_db) # Grid
+
+# As data become easier to get, accounting more standardized and analytical tools more accessible, there is very little competitive advantage to computing ratios from financial statements and running screens to find cheap stocks. To find a competitive edge, investors have to become creative in finding new screens that are either qualitative or go beyond the financial statements or in finding new ways of processing publicly accessible data to find undervalued stocks. For example, we could use natural language processing (NLP) methods in order to find differentiated insights into securities not found in filings, earnings calls or fundamental datasets. The data used in earnings forecasts today could include satellite imagery, real-time spending information, meta-data details of every product on every store, and much more besides. This dramatic increase in the availability of alternative data is profoundly changing the investment landscape. As these alternative data sets grow and become more complex, extracting & maintaining a comprehensive knowledge of all this information is increasingly challenging. NLP is a natural choice for us to comb through massive amounts of alternative data and find relevant information (growth assumptions) and insight (narratives) more quickly and efficiently.
+```
+
+# Early Warning Indicators
+
+Recent advances in text mining, sentiment analysis, natural language processing (NLP) have allowed investment managers to easily compute large feature sets on text data (and other alternative data sources). These features can be combined with global economic data including fundamental data on companies (across industries and regions) for producing early warning indicators (EWIs). An early warning indicator is a key activity to generate and disseminate timely and meaningful investment information that enables a money manager to prepare and act appropriately to reduce the possibility of a loss.
+
+## GDELT Country Stability
+
+The **2018-21 Turkish currency and debt crisis** is a financial and economic crisis in Turkey. It has its roots in both Turkish politics and dysfunctional practices on the part of Turkish regulators, banks and businesses, and has been aided and abetted by investors who have been too willing to look the other way. While the crisis was prominent for waves of major devaluation of the Turkish lira, later stages were characterized by high inflation, rising borrowing costs, corporate debt defaults and finally by contraction of economic growth. Below is Turkey's stability over a rolling $6$ month period over $4$ forms of stability using the GDELT[^1] Event database:
+
+[^1]: <a href="https://www.gdeltproject.org/" target="_blank">The GDELT Project</a> is one of the largest open datasets for understanding global human society, totaling more than $8.1$ trillion datapoints spanning $200$ years in $152$ languages. GDELT's crawler fleets are globally distributed and its machine learning algorithms leverage Google Cloud's vast reach into local coverage in local languages around the world, scanning the world in realtime to identify the earliest glimmers of potential disease outbreaks and coupling those alerts with overlays like transportation networks, mobility corridors, health infrastructure and other information to estimate disease trajectories.
+
+```{r, echo=FALSE}
+turkey_gdelt_instability
+```
+
+* __instability__ This display a simple synthetic _instability_ measure for a country offering a very basic, but insightful, view of the current level of _material conflict_ and _protest_ involving it.
+
+* __conflict__ Same as above, but only includes _material conflict_, ignoring _protest_ events.
+
+* __protest__ Same as above, but assessing only _protest_ activity and excluding all other kinds of _material conflict_.
+
+* __tone__ Average standard GDELT _tone_ of all articles mentioning the location at least twice in the article within the given timeframe. This uses a very basic filter of requiring that an article mention the location at least twice anywhere in the article body, and assesses tone at the article level.
+
+Today, we are leveraring GDELT to not just provide the earliest[^2] warning signals across asset classes, but to test the assumptions that directly impact our investment decision making. The trickiest part of the valuation process is striking a balance amongst growth, profitability, and reinvestment, while arriving at a plausible story that holds these strings together. In this process, we must face and manage uncertainties, which inform our time-varying approach to estimating risk premiums. The risk premium is the reward we get for investing, and **we want it higher, not lower**. 
+
+[^2]: A little after midnight on Dec. 30, artificial intelligence platform <a href="https://bluedot.global" target="_blank">BlueDot</a> picked up on a cluster of "unusual pneumonia" cases happening around a market in Wuhan, China, using data GDELT monitored the previous day. GDELT had spotted what would come to be known as **COVID-19**, nine days before the _World Health Organization_ released its statement alerting people to the emergence of a novel coronavirus. Even more remarkable is that despite GDELT having no explicit focus on biosurveillance, these early warning signals appeared in GDELT's open data feeds at the same time that some of the world's largest dedicated biosurveillance monitors saw their first warning signals. 
+
+
+## Risk Premium
+
+Every Turkish business, small or large, public or private, faces a challenge of how to allocate capital across competing needs (projects, investments and acquisitions), though some businesses have more opportunities or face more severe constraints than others. In making these allocation or investment decisions, businesses have to make judgments on the minimum return that they would accept on an investment, given its risk, and that minimum return is referenced as the hurdle rate. Having said that, though, it is worth noting that the vehicle that we use here to convey country risk into hurdle rates is the equity risk premium (ERP), the price of risk in Turkish equity markets. 
+
+As the ERP rises and falls, it drives what investors are willing to pay for Turkish stocks, and what companies demand as hurdle rates. Views on whether it is too high or too low determine whether stocks are collectively under or over valued. In practice, most analysts and companies estimate ERPs by looking at the past (historical data), but that is not only backward looking, but it yields static and noisy estimates of the ERP. An implied ERP, computed from current stock prices and expected future cash flows, is a more forward-looking and dynamic estimate [^3]. The price of risk changes on a day-to-day basis based on a variety of variables, including uncertainty around future economic growth, political stability, worries about catastrophes/disasters, investor risk aversion, and information availability/reliability. So I think that the overriding message - to get away from static to dynamic, from backward-looking to forward-looking - is a strong principle that effective investors must employ. 
+
+[^3]: <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3825823" target="_blank">Damodaran A, 2021. Equity risk premiums (ERP): Determinants, estimation and implications - The 2021 edition. New York Univ, Stern School of Business.</a> Warning: It is 130 pages long but the R code to replicate the current implied ERP can be found here: <a href="https://rpubs.com/rafael_nicolas/sp500_valuation" target="_blank">https://rpubs.com/rafael_nicolas/sp500_valuation</a>
+
+Below I share how the pandemic has caused dramatic changes in both equity and country risk premiums in Turkey. The ERP, or the extra compensation that investors seek to hold Turkish stocks rather than the safest assets, has dropped to its lowest level in a decade. Inflation fears have sent shock waves through Turkish markets and the effects are far more likely to be negative[^4], since we have more negative side effects, with risk premiums rising and margins coming under pressure, especially for companies with rising borrowing costs, and correspondingly rising loan defaults.
+
+[^4]: The effect of higher-than-expected inflation on default spreads is more intuitive and reflects the reality that interest expenses will be higher when inflation rises, and interest rates go up, and those larger interest expenses may create a higher risk of default.
+
+```{r, echo=FALSE}
+perc_vars=c("rating_ds", "rating_crp", "rating_erp", 
+            "cds_ds", "cds_crp", "cds_erp", "mat_erp")
+turkey_risk_premium_data %>% 
+  format.dt.f(page_length = 10, perc_vars, ron_vars=NA) # knitr::kable()
+```
+
+# Portfolio Stocks
+
+Statistical analysis applied to risk premia investing has been a rapidly developing field in recent years. Risk premia investing is a subfield of a large discipline that encompasses asset allocation, quantitative trading and wealth management. In equities, its premise is that differences in the returns of firms can be explained by the characteristics of these firms. Applying statistical learning over these characteristics can enhance the resulting risk premia.
+
+<!--
+ Below I intended to introduce the application of statistical learning methods to risk premia investing.
+-->
+
+## Fundamental Factors
+
+
+The cost of capital is a ubiquitous metric for corporate executives, showing up in almost every aspect of their job description. It drives investing decisions, <a href="https://github.com/rnfermincota/academic/blob/master/teaching/traditional_assets/database/flowcharts.png" target="_blank">helps determine financing choices, and affects dividend policy and valuations.</a> That being said, cost of capital is often mangled and misused in practice, and it seems that rather than operating within a range that minimize the cost of capital corporate executives are making financing choices based upon perceptions of the <a href="https://www.linkedin.com/pulse/cost-capital-new-role-cfo-chief-figure-it-out-officer-fermin-cota" target="_blank">cheapness (or costliness) of capital</a>. It should come as no surprise, as some Turkish companies are hamstrung by default and distress concerns. Unfortunately, for some of these businesses, that debt will threaten their near future on growth and investment. For others, it will create opportunities and change in business plans as consumer confidence comes back quickly. There is a reason why we have been using the optimal capital structure as an investment signal. 
+
+Below I share the portfolio' stocks with capital structure quality and what each company can sustain in debt as we change the current debt to capital ratio to a target debt ratio. To estimate the cost of capital at different debt ratios, <a href="https://github.com/rnfermincota/academic/blob/master/teaching/traditional_assets/database/" target="_blank">I used data from trusted data vendors including S&P Capital IQ, Bloomberg, and a host of specialized data sources</a>. I first estimated the cost of equity at each debt ratio, and then estimated the interest coverage ratio, synthetic rating, and cost of debt, taking care to ensure that if the interest expenses exceed the operating income, tax benefits would be lost.
+
+```{r, echo=FALSE}
+# Take out stocks that dont want and add other fundamental factors
+nm<-names(turkey_screener)[!names(turkey_screener) %in% c("company_name")]
+turkey_screener %>% format.dt.f(., perc_vars=NA, ron_vars=nm, ron_digits=4)
+```
+
+It is true that some Turkish companies and investors, especially those playing the leverage game in the pre-COVID economy, overestimated its benefits and underestimated its costs, and they are now learning this lesson the hard way. It is also true that other companies and investors like me, in the name of prudence, think that less debt is always better than more debt, and no debt is optimal. We too are leaving money on the table, by being too conservative. A little of this, but not much, we have learned.
+
+
+## Market Prices
+
+It has been said that those who forget the past are destined to relive it, and that is one reason why we pore over historical performance. Starting in February 2020 and extending for most of the rest of the year, this pandemic created turmoil in both financial markets an the real economy. To capture how **COVID** has played out in our portfolio stocks, we computed the changes in aggregate market capitalization during $2020$ and $2021$ broken down by sub periods (1/1/20 - 2/14, 2/14- 3/20, 3/20 - 9/1, 9/1 - 12/31, and 12/31 - 6/18/21), reflecting the ups and downs in the Turkish market. 
+
+```{r, echo=FALSE}
+perc_vars=names(turkey_events_percent_chgs)[-1]
+turkey_events_percent_chgs %>%
+  format.dt.f(page_length = 10, perc_vars, ron_vars=NA)
+```
+
+<!--
+We also looked at the change in revenues and operating income over the last twelve months (October 2019 - September 2020) compared to revenues in the year prior (October 2018 - September 2019). Since the worst effects of the crises were in the second and third quarters of 2020, this comparison should provide insight into how much damage was wrought by the viral shutdown. Just as a preview of how consequential the year was for stock prices, take a look at the median percentage change in market capitalization in the table below:
+-->
+
+
+# Portfolio Strategy
+
+The portfolio strategy we seek to achieve is an equal balance between the risk associated with each stock. In that way, lower risk stocks will generally have higher notional allocations than higher risk stocks. The idea here is to manage a portfolio that tend to perform reasonably well during both favorable and unfavorable economic and market conditions. The traditional approach to portfolio construction [^5] often tolerates higher concentration of risk with the objective to generate higher longer-term returns, but this approach has a serious flaw. If the source of short-term risk is a heavy concentration in a single stock, this approach brings with it a significant risk of poor long-term returns that threatens the ability to meet future obligations. This is because every asset is susceptible to poor performance that can last for a while, caused by a sustained shift in the economic environment. The best way to achieve reliable balance is to design a portfolio based on a fundamental understanding of the marginal risk contribution at the asset, country, regional and/or sector level. This is the foundation of the so-called <a href="https://www.bridgewater.com/research-and-insights/risk-parity-is-about-balance" target="_blank">risk parity portfolio approach</a>.
+
+[^5]: Mean-variance efficient frontier with optimal Sharpe-ratio.
+
+## Backtest Performance
+
+When we design a portfolio strategy, the first thing to do is to backtest it. Backtesting is the process by which the portfolio strategy is put to test using the past historical market data available. A common approach is to do a single backtest against the existing historical data and then plot graphs and draw conclusions from that. This could be a big mistake. Performing a single backtest is not representative as it is just one realization and one will definitely overfit the tested strategy if there is parameter tuning involved or portfolio comparisons involved. 
+
+Here we perform multiple backtesting of portfolios in an automated way on a rolling-window basis by taking data randomly from different time periods and different portfolio stocks. Each portfolio design is easily defined as a function that takes as input a window of the stock prices and outputs the portfolio weights. Multiple portfolios can be easily specified as a list of functions or as files in a folder. Multiple datasets can be conveniently extracted randomly from different markets, different time periods, and different subsets of assets. The results can be later assessed and ranked with tables based on a number of performance criteria (e.g., expected return, volatility, Sharpe ratio, drawdown, turnover rate, return on investment, computational time, etc.), as well as plotted in a number of ways with nice barplots and boxplots.
+
+```{r, echo=FALSE}
+summaryTable(
+  backtestSummary(turkey_portfolio_backtest), 
+  type = "DT", 
+  order_col = "Sharpe ratio", 
+  order_dir = "desc"
+)
+```
+
+### Cumulative Returns Chart
+
+```{r, echo=FALSE}
+backtestChartCumReturns(turkey_portfolio_backtest)
+```
+
+### Max Drawdown Chart
+
+```{r, echo=FALSE}
+backtestChartDrawdown(turkey_portfolio_backtest)
+```
+
+### Assets Exposures Over Time
+
+```{r, echo=FALSE}
+par(mfrow=c(2,1))
+backtestChartStackedBar(turkey_portfolio_backtest, portfolio = "risk parity portfolio", legend = TRUE)
+backtestChartStackedBar(turkey_portfolio_backtest, portfolio = "tangency portfolio" , legend = TRUE)
+```
+
+# Ranking
+
+Lets look at the costs of capital for Turkish companies across industries. We could argue that these hurdle rates represent benchmarks that Turkish companies have to beat to create value. That said, many companies measure success using lower thresholds, with some arguing that making money (having positive profits) is good enough and others positing that being more profitable than competitors in the same business makes a firm a good company. However, without considerations given to cost of capital, returns are only half the picture. After all, capital is invested in businesses and that capital invested elsewhere in equivalent risk investments could have earned a return. The composite measure of excess returns is what we rank here.
+
+## Stocks
+
+With the caveat in mind that the returns on capital that we compute for individual Turkish companies reflects operating income in 2020 that clearly will change (and fairly dramatically so) because of the vaccine, we compare the return on capital to the cost of capital for each of the $397$ Turkish companies and used that comparison to create a ranking for each industry:
+
+```{r, echo=FALSE}
+nm<-names(turkey_earnings_debt)[!names(turkey_earnings_debt) %in% c("country", "company_name", "industry_group")]
+turkey_earnings_debt %>% format.dt.f(., perc_vars=NA, ron_vars=nm, ron_digits=4)
+```
+
+## Industries
+
+Just as a preview of how consequential the year was for Turkish industries, let's take a look at the median composite measure of excess returns. This should provide insight into how much damage was wrought by the viral shutdown. 
+
+```{r, echo=FALSE}
+turkey_industries<-turkey_industries %>% rename(no_companies=company_name)
+nm<-names(turkey_industries)[!names(turkey_industries) %in% c("country", "no_companies", "industry_group")]
+turkey_industries %>% format.dt.f(., perc_vars=NA, ron_vars=nm, ron_digits=4)
+```
+
+# Corporate Valuation
+
+For the past decade I have <a href="https://www.linkedin.com/posts/rnfc_mathematics-genius-statistics-activity-6737461768458764288-fslU" target="_blank">extended my lectures</a> far beyond what is labeled as corporate finance, introducing students to some reproducible examples that show how calculus can be used to estimate the optimal financing mix for companies across industries and regions. Starting with how the market is pricing risk in Turkey and <a href="https://rpubs.com/rafael_nicolas/crp" target="_blank">globally</a>, and then moving on to differences across companies on the costs of capital.
+
+## Capital Structure
+
+Here the cost of capital operates as an optimizing tool for the capital structure where the price of risk is set by markets, and it enters the cost of capital in two places. When estimating the cost of equity, it manifests as an equity risk premium, and in the cost of debt computation, it is a default spread. Both are set by markets, reflect investor risk aversion and change over time and the approaches that we use to estimate them have to reflect this reality. Using this process, we estimated the cost of capital and target debt ratios for a total of <a href="https://github.com/rnfermincota/academic/tree/master/teaching/traditional_assets/database/data/turkey" target="_blank">`r nrow(turkey_cost_capital)` non-financial service Turkish companies</a>. I deliberately removed financial services firms from the analysis, because: (i) computing operating income or invested capital is a difficult, if not impossible task, at these firms. (ii) debt to a financial service firm is more raw material than capital, and determining what comprises debt is almost an unsolvable puzzle.
+
+```{r, echo=FALSE}
+nm<-names(turkey_cost_capital)[!names(turkey_cost_capital) %in% c("company_name", "exchange_ticker", "industry_group", "country", "flag_bankruptcy", "flag_refinanced", "rating_firm_type")]
+turkey_cost_capital %>% format.dt.f(., perc_vars=NA, ron_vars=nm, ron_digits=4)
+```
+
